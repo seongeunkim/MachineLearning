@@ -1,44 +1,40 @@
-file_train = csvread("year-prediction-msd-test.txt");
-m = rows(file_train);
+%file_train = csvread("year-prediction-msd-train.txt");
+%file_train = csvread("teste1.csv");
+%m = rows(file_train);
+%n = rows(file_train.');
 
-% Chute inicial do Theta
-theta(1) = 1;
-theta(2:90) = 0;
-alpha = 0.00000005;
+%Chute inicial dos 91 thetas
+%theta(1:n) = 0;
+
+%y = file_train(1:m, 1);
+%x = file_train;
+%x(1:m, 1) = 1;
+
+%xMax = max(x);
+%xMean = mean(x);
+%xt = bsxfun(@minus, x, xMean);
+%xtt = bsxfun(@rdivide, xt, xMax);
+%xtt(1:m, 1) = 1;
+
+%x = xtt;
+%thetaDer = (inv(x.' * x) * x.' * y).';
+
 xx = [];
 yy = [];
-
-for z = 1:100
-  % Para cada dado
-  for i = 1:m
-    y = file_train(i,1);
-    x = file_train(i, 2:91);
+alpha = 0.2;
+for z = 0:10000
     h = theta * x.';
-
-    erro(i) = h-y;
-    var(i, 1:90) = erro(i) * x(1:90);
-  endfor
-
-  % Calcula o erro
-  J = (erro * erro.')/(2*m);
-  printf("Vez %d: %d\n",z ,J);
-  xx = [xx, z];
-  yy = [yy, J];
-  plot(xx,yy);
-  refresh();
-  fflush(stdout);
-  fflush(stderr);
-
-  % Para cada theta
-  for j = 1:90
-    soma(j) = sum(var(1:m, j));
-    thetaTemp(j) = theta(j) - (alpha/m) * soma(j);
-  endfor
-
-  for j = 1:90
-      theta(j) = thetaTemp(j);
-  endfor
+    erro = h-y.';
+    
+    der = erro * x;
+    theta = theta - (alpha/m)*der;
+   
+    J = (erro * erro.')/(2*m);
+    xx = [xx, z];
+    yy = [yy, J];
+    
+    plot(xx,yy);
+    refresh();
+    printf("[%d] Erro: %d\n", z, J);
+    fflush(stdout);
 endfor
-
-
-
