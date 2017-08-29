@@ -21,7 +21,7 @@ xMax = max(x);
 xMean = mean(x);
 xt = bsxfun(@minus, x, xMean);
 x = bsxfun(@rdivide, xt, xMax);
-x(1:m, 1) = 1
+x(1:m, 1) = 1;
 
 % Alpha
 alpha = 0.2;
