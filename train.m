@@ -3,7 +3,7 @@ xx = [];
 yy = [];
 
 % Iteração
-for z = 0:2000
+for z = 0:200
     % Itera
     h = theta * x.';
     erro = h-y.';
